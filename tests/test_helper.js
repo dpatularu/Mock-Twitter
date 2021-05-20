@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const Tweet = require('../models/tweet');
 
 const registerUser = async (username, password) => {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -19,6 +20,22 @@ const registerUser = async (username, password) => {
   return user;
 };
 
+const initialTweets = [
+  { content: 'i love twitter' },
+  { content: 'follow for follow!' },
+  { content: 'i ate a pizza today' },
+];
+
+const retrieveRandomTweetFromDb = async () => {
+  const tweets = await Tweet.find({});
+
+  // We parse and stringify to turn the id object into a string
+  const retrievedTweet = JSON.parse(JSON.stringify(tweets[0]));
+  return retrievedTweet;
+};
+
 module.exports = {
   registerUser,
+  initialTweets,
+  retrieveRandomTweetFromDb,
 };

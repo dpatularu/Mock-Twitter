@@ -19,6 +19,15 @@ describe('Registration tests', () => {
     await api.post('/api/register').send(newUser).expect(200);
   });
 
+  test('Username must be unique', async () => {
+    const newUser = {
+      username: 'newguy42',
+      password: 'hunter2',
+    };
+    await api.post('/api/register').send(newUser);
+    await api.post('/api/register').send(newUser).expect(400);
+  });
+
   test('Registration with too short of password returns 400', async () => {
     const shortPasswordUser = {
       username: 'tinypassword',
