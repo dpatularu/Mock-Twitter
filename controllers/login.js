@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const loginRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');

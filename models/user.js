@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -12,14 +14,25 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  directMessages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'DirectMessage',
+    },
+  ],
+  tweets: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Tweet',
+    },
+  ],
 });
-
-// TODO: set toJSON for schema
 
 userSchema.plugin(uniqueValidator);
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
+    // eslint-disable-next-line no-param-reassign
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
