@@ -2,6 +2,7 @@ const inboxRouter = require('express').Router();
 const DirectMessage = require('../models/directmessage');
 const User = require('../models/user');
 
+// Retrieve all Dms in currently logged in user's inbox
 inboxRouter.get('/', async (request, response) => {
   const { user } = request;
   const allDMs = await DirectMessage.find({ recipient: user.username });
@@ -9,6 +10,7 @@ inboxRouter.get('/', async (request, response) => {
   return response.json(allDMs);
 });
 
+// Send a DM to another user
 inboxRouter.post('/:recipient', async (request, response) => {
   const { recipient } = request.params;
   const { body, user } = request;

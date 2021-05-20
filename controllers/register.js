@@ -2,6 +2,7 @@ const registerRouter = require('express').Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
+// Register a new account
 registerRouter.post('/', async (request, response) => {
   const { body } = request;
 

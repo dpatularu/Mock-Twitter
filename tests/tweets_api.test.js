@@ -32,6 +32,8 @@ describe('Tweets have CRUD and user authentication functionality', () => {
       const newTweet = new Tweet({
         content: initialTweets[i].content,
         userid: user.id,
+        likedBy: [],
+        replies: [],
       });
       tweets = tweets.concat(newTweet);
     }
@@ -82,12 +84,40 @@ describe('Tweets have CRUD and user authentication functionality', () => {
       content: 'Updated Tweet',
     };
 
-    const tweetToUpdate = await retrieveRandomTweetFromDb();
+    let tweetToUpdate = await retrieveRandomTweetFromDb();
+    tweetToUpdate = {
+      ...tweetToUpdate,
+      content: 'Updated Tweet',
+    };
     const { tweetid } = tweetToUpdate;
 
     const response = await api.put(`/api/tweets/${tweetid}`).set('authorization', token).send(newTweet).expect(200);
 
     expect(response.body).toMatchObject(newTweet);
+  });
+
+  test('Thread functionality. Users can reply to tweets', async () => {
+    const tweetToReply = await retrieveRandomTweetFromDb();
+    const { tweetid } = tweetToReply;
+
+    const replyTweet = {
+      content: 'reply',
+    };
+
+    const response = await api.post(`/api/tweets/${tweetid}`).set('authorization', token).send(replyTweet).expect(201);
+
+    expect(response.body.replies).toHaveLength(1);
+  });
+
+  test('Like and unlike functionality', async () => {
+    const tweetToLike = await retrieveRandomTweetFromDb();
+    const { tweetid } = tweetToLike;
+
+    const likeResponse = await api.patch(`/api/tweets/${tweetid}`).set('authorization', token).expect(200);
+    expect(likeResponse.body.likedBy).toHaveLength(1);
+
+    const unlikeResponse = await api.patch(`/api/tweets/${tweetid}`).set('authorization', token).expect(200);
+    expect(unlikeResponse.body.likedBy).toHaveLength(0);
   });
 });
 

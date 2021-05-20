@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
 const tweetSchema = new mongoose.Schema({
@@ -11,6 +9,18 @@ const tweetSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  replies: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Tweet',
+    },
+  ],
+  likedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
 });
 
 tweetSchema.set('toJSON', {

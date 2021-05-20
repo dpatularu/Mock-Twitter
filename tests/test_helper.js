@@ -21,9 +21,9 @@ const registerUser = async (username, password) => {
 };
 
 const initialTweets = [
-  { content: 'i love twitter' },
-  { content: 'follow for follow!' },
-  { content: 'i ate a pizza today' },
+  { content: 'i love twitter', replies: [], likedBy: [] },
+  { content: 'follow for follow!', replies: [], likedBy: [] },
+  { content: 'i ate a pizza today', replies: [], likedBy: [] },
 ];
 
 const retrieveRandomTweetFromDb = async () => {

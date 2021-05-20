@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 
 const directMessageSchema = new mongoose.Schema({
