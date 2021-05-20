@@ -7,7 +7,7 @@ const directMessageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  recipiant: {
+  recipient: {
     type: String,
     required: true,
   },
@@ -18,7 +18,7 @@ const directMessageSchema = new mongoose.Schema({
 
 directMessageSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.tweetid = returnedObject._id.toString();
+    returnedObject.msgid = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
   },
