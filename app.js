@@ -7,7 +7,7 @@ const middleware = require('./utils/middleware');
 const app = express();
 
 const {
-  loginRouter, registerRouter, inboxRouter,
+  loginRouter, registerRouter, tweetRouter, inboxRouter,
 } = require('./controllers/routes');
 const config = require('./utils/config');
 
@@ -22,6 +22,7 @@ app.use(middleware.tokenExtractor);
 app.use('/api/register', registerRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/inbox', middleware.userExtractor, inboxRouter);
+app.use('/api/tweets', middleware.userExtractor, tweetRouter);
 
 app.use(middleware.errorHandler);
 
