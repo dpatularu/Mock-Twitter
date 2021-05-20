@@ -14,7 +14,6 @@ let recipientToken;
 describe('Chat functionality with Direct Messages', () => {
   beforeAll(async () => {
     await User.deleteMany({});
-    await DirectMessage.deleteMany({});
 
     const senderLogin = await registerUser('sender', 'password');
     const recipientLogin = await registerUser('recipient', 'password');
@@ -26,6 +25,10 @@ describe('Chat functionality with Direct Messages', () => {
     recipientToken = `bearer ${recipientResponse.body.token}`;
   });
 
+  beforeEach(async () => {
+    await DirectMessage.deleteMany({});
+  });
+
   test('Direct Messages are successfully sent', async () => {
     const message = {
       message: 'this is a test',
@@ -34,6 +37,11 @@ describe('Chat functionality with Direct Messages', () => {
   });
 
   test('Recipient has successfully received senders DM', async () => {
+    const message = {
+      message: 'this is a test',
+    };
+    await api.post('/api/inbox/recipient').set('authorization', senderToken).send(message);
+
     const recipientInbox = await api.get('/api/inbox').set('authorization', recipientToken);
 
     expect(recipientInbox.body[0]).toMatchObject({

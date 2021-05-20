@@ -8,13 +8,13 @@ loginRouter.post('/', async (request, response) => {
   const { body } = request;
   const user = await User.findOne({ username: body.username });
 
-  const passwordIsCorrect = user === null
+  const isPasswordCorrect = user === null
     ? false
     : await bcrypt.compare(body.password, user.password);
 
-  if (!(user && passwordIsCorrect)) {
+  if (!(user && isPasswordCorrect)) {
     return response.status(401).json({
-      error: 'Invalid username or password',
+      error: 'Error: Invalid username or password',
     });
   }
 
