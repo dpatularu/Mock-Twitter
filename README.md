@@ -1,8 +1,8 @@
-# My Twitter
+# Speer-Twitter
 ## Twitter API created for the Speer Backend Assessment
 
 
-My Twitter is a RESTful API created with Node.js, Express and MongoDB. It was created for Speer as part of their backend assessment challenge. I had quite a lot of fun with it and doing something with my hands on is time well spent. 
+Speer-Twitter is a RESTful API created with Node.js, Express and MongoDB. It was created for Speer as part of their backend assessment challenge. I had quite a lot of fun with it and doing something with my hands on is time well spent. 
 
 ## Features
 - User registration with unique username and a password
@@ -17,7 +17,7 @@ The API is designed to give all the necessary data so that frontend developers d
 
 ## Technologies
 
-My Twitter is created with the following tech:
+Speer-Twitter is created with the following tech:
 
 - [Node.js](https://nodejs.dev/) - my first (but not last!) backend language that I learned
 - [Express](https://expressjs.com/) - a lovely framework for node.js
@@ -33,7 +33,7 @@ A product is only as good as its codebase
 
 ## Installation
 
-My Twitter requires [Node.js](https://nodejs.org/) and a [MongoDB](https://www.mongodb.com) cluster. In the MongoDB Cluster, make a two databases; one will be for production while the other is for testing.
+Speer-Twitter requires [Node.js](https://nodejs.org/) and a [MongoDB](https://www.mongodb.com) cluster. In the MongoDB Cluster, make a two databases; one will be for production while the other is for testing.
 
 Install the dependencies and devDependencies and start the server.
 ```sh
