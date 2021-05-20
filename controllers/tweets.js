@@ -75,7 +75,7 @@ tweetRouter.put('/:tweetid', async (request, response) => {
 
   const tweetInDatabase = await Tweet.findById(tweetid);
 
-  if (!request.user.id || request.user.id !== tweetInDatabase.userid.toString()) {
+  if (request.user.id !== tweetInDatabase.userid.toString()) {
     return response.status(401).json({ error: 'Authenitcation failed: token either missing or invalid' });
   }
 
@@ -92,7 +92,8 @@ tweetRouter.delete('/:tweetid', async (request, response) => {
   const { tweetid } = request.params;
   const tweetInDatabase = await Tweet.findById(tweetid);
 
-  if (!request.user.id || request.user.id !== tweetInDatabase.userid.toString()) {
+  // Check if logged in user matches owner of tweet
+  if (request.user.id !== tweetInDatabase.userid.toString()) {
     return response.status(401).json({ error: 'Authenitcation failed: token either missing or invalid' });
   }
 
@@ -102,12 +103,10 @@ tweetRouter.delete('/:tweetid', async (request, response) => {
 
 // Like/Unlike a tweet
 tweetRouter.patch('/:tweetid', async (request, response) => {
-  if (!request.user.id) {
-    return response.status(401).json({ error: 'Authenitcation failed: token either missing or invalid' });
-  }
   const { tweetid } = request.params;
   const likedTweet = await Tweet.findById(tweetid);
 
+  // If user  already liked tweet, unlike it; else, like it
   if (likedTweet.likedBy.includes(request.user.id)) {
     // The user id must be sanitized via stringify and parse for comparision to work
     likedTweet.likedBy = likedTweet.likedBy.filter((user) => JSON.parse(JSON.stringify(user)) !== request.user.id);
