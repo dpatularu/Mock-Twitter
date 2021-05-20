@@ -2,7 +2,7 @@
 ## Twitter API created for the Speer Backend Assessment
 
 
-My Twitter is a RESTful API created with Node.js, Express and MongoDB. It was created for Speer as part of their backend assessment challenge. I had quite a lot of fun with it and doing soemthing with my hands on is time well spent. 
+My Twitter is a RESTful API created with Node.js, Express and MongoDB. It was created for Speer as part of their backend assessment challenge. I had quite a lot of fun with it and doing something with my hands on is time well spent. 
 
 ## Features
 - User registration with unique username and a password
