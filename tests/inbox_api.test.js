@@ -33,12 +33,10 @@ describe('Chat functionality with Direct Messages', () => {
     await api.post('/api/inbox/recipient').set('authorization', senderToken).send(message).expect(200);
   });
 
-  test('User can retrieve messages from their inbox', async () => {
+  test('Recipient has successfully received senders DM', async () => {
     const recipientInbox = await api.get('/api/inbox').set('authorization', recipientToken);
 
-    delete recipientInbox.body[0].msgid;
-
-    expect(recipientInbox.body[0]).toEqual({
+    expect(recipientInbox.body[0]).toMatchObject({
       sender: 'sender',
       recipient: 'recipient',
       message: 'this is a test',
