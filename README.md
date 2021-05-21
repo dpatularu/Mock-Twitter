@@ -69,7 +69,67 @@ With this structure, the codebase becomes much more wieldly and pleasant to use.
 
 The next step is to actually start coding. We start with creating user registration and login, as our tweets will need to know who is logged in to have any meaningful functionality. 
 
-Registering users is easy enough, we just have to make sure the password in the request object is immediately hashed and removed for security reasons. We use the bcrypt library to hash and verify passwords. Once we can store new users (hopefully with hashed passwords!) we now implement logging in, which is quite easy as we're just checking the request body has the right information. Once completed, we write tests to ensure all possible cases are satisfied.
+Registering users is easy enough, we just have to make sure the password in the request object is immediately hashed and removed for security reasons. We use the bcrypt library to hash and verify passwords. Once we can store new users (hopefully with hashed passwords!) we now implement logging in, which is quite easy as we're just checking the request body has the right information.
+
+```javascript
+// Register a new account
+registerRouter.post('/', async (request, response) => {
+  const { body } = request;
+
+  if (body.password.length < 5) {
+    return response.status(400).send({ error: 'Password must be greater than 4 characters' });
+  }
+
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(body.password, saltRounds);
+  delete body.password;
+
+  const user = new User({
+    username: body.username,
+    password: passwordHash,
+  });
+
+  await user.save();
+  return response.send({
+    message: 'Registration complete! Please log in.',
+  });
+});
+```
+
+```javascript
+// Login to an existing account
+loginRouter.post('/', async (request, response) => {
+  const { body } = request;
+  const user = await User.findOne({ username: body.username });
+
+  const isPasswordCorrect = user === null
+    ? false
+    : await bcrypt.compare(body.password, user.password);
+
+  if (!(user && isPasswordCorrect)) {
+    return response.status(401).json({
+      error: 'Error: Invalid username or password',
+    });
+  }
+
+  const userInfoPayload = {
+    username: user.username,
+    id: user._id,
+  };
+
+  const token = jwt.sign(userInfoPayload, process.env.SECRET, { expiresIn: 3600 });
+
+  return response.status(200).send({
+    token,
+    username: user.username,
+    id: user._id,
+  });
+});
+```
+
+
+
+Once completed, we write tests to ensure all possible cases are satisfied.
 
 ```
  PASS  tests/register_api.test.js
