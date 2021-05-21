@@ -1,6 +1,7 @@
 const tweetRouter = require('express').Router();
 const Tweet = require('../models/tweet');
 const User = require('../models/user');
+const { compareIdToString } = require('../utils/helper_functions');
 
 // Get all tweets in the database
 tweetRouter.get('/', async (request, response) => {
@@ -44,7 +45,7 @@ tweetRouter.post('/', async (request, response) => {
 tweetRouter.post('/:tweetid', async (request, response) => {
   const { body } = request;
   const { tweetid } = request.params;
-  const targetTweet = await Tweet.findById(tweetid);
+  const thread = await Tweet.findById(tweetid);
 
   /* Add the reply tweet to DB */
   const reply = new Tweet({
@@ -56,8 +57,8 @@ tweetRouter.post('/:tweetid', async (request, response) => {
   const savedReply = await reply.save();
 
   /* Append target tweet's reply array with new reply */
-  targetTweet.replies = targetTweet.replies.concat(savedReply._id);
-  const updatedThread = await targetTweet.save();
+  thread.replies = thread.replies.concat(savedReply._id);
+  const updatedThread = await thread.save();
 
   /* Update user's tweets */
   const user = await User.findById(request.user.id);
@@ -108,8 +109,8 @@ tweetRouter.patch('/:tweetid', async (request, response) => {
 
   // If user  already liked tweet, unlike it; else, like it
   if (likedTweet.likedBy.includes(request.user.id)) {
-    // The user id must be sanitized via stringify and parse for comparision to work
-    likedTweet.likedBy = likedTweet.likedBy.filter((user) => JSON.parse(JSON.stringify(user)) !== request.user.id);
+    // compareIdToString will compare a MongoDB ObjectID to a string for equality
+    likedTweet.likedBy = likedTweet.likedBy.filter((id) => compareIdToString(id, request.user.id));
   } else {
     likedTweet.likedBy = likedTweet.likedBy.concat(request.user.id);
   }

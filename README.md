@@ -137,14 +137,15 @@ Now every tweet has two arrays, one for likes which will hold users (who liked t
 
 Let's create the endpoint for likes. Since we are altering tweets slightly, we will use the patch HTTP method
 ```javascript
+// Like/Unlike a tweet
 tweetRouter.patch('/:tweetid', async (request, response) => {
   const { tweetid } = request.params;
   const likedTweet = await Tweet.findById(tweetid);
 
   // If user  already liked tweet, unlike it; else, like it
   if (likedTweet.likedBy.includes(request.user.id)) {
-    // The user id must be sanitized via stringify and parse for comparision to work
-    likedTweet.likedBy = likedTweet.likedBy.filter((user) => JSON.parse(JSON.stringify(user)) !== request.user.id);
+    // compareIdToString will compare a MongoDB ObjectID to a string for equality
+    likedTweet.likedBy = likedTweet.likedBy.filter((id) => compareIdToString(id, request.user.id));
   } else {
     likedTweet.likedBy = likedTweet.likedBy.concat(request.user.id);
   }
@@ -156,10 +157,11 @@ tweetRouter.patch('/:tweetid', async (request, response) => {
 
 For replying to threads:
 ```javascript
+// Reply to a tweet's thread
 tweetRouter.post('/:tweetid', async (request, response) => {
   const { body } = request;
   const { tweetid } = request.params;
-  const targetTweet = await Tweet.findById(tweetid);
+  const thread = await Tweet.findById(tweetid);
 
   /* Add the reply tweet to DB */
   const reply = new Tweet({
@@ -171,8 +173,8 @@ tweetRouter.post('/:tweetid', async (request, response) => {
   const savedReply = await reply.save();
 
   /* Append target tweet's reply array with new reply */
-  targetTweet.replies = targetTweet.replies.concat(savedReply._id);
-  const updatedThread = await targetTweet.save();
+  thread.replies = thread.replies.concat(savedReply._id);
+  const updatedThread = await thread.save();
 
   /* Update user's tweets */
   const user = await User.findById(request.user.id);
