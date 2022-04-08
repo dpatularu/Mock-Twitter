@@ -1,8 +1,6 @@
-# Speer-Twitter
-## Twitter API created for the Speer Backend Assessment
+# Mock-Twitter
 
-
-Speer-Twitter is a RESTful API created with Node.js, Express and MongoDB. It was created for Speer as part of their backend assessment challenge. I had quite a lot of fun with it and doing something with my hands on is time well spent. 
+Mock-Twitter is a RESTful API created with Node.js, Express and MongoDB. I had quite a lot of fun making it and doing something with my hands on is time well spent. 
 
 ## Features
 - User registration with unique username and a password
@@ -17,7 +15,7 @@ The API is designed to give all the necessary data so that frontend developers d
 
 ## Technologies
 
-Speer-Twitter is created with the following tech:
+Mock-Twitter is created with the following tech:
 
 - [Node.js](https://nodejs.dev/) - my first (but not last!) backend language that I learned
 - [Express](https://expressjs.com/) - a lovely framework for node.js
@@ -33,7 +31,7 @@ A product is only as good as its codebase
 
 ## Installation
 
-Speer-Twitter requires [Node.js](https://nodejs.org/) and a [MongoDB](https://www.mongodb.com) cluster. In the MongoDB Cluster, make a two databases; one will be for production while the other is for testing.
+Mock-Twitter requires [Node.js](https://nodejs.org/) and a [MongoDB](https://www.mongodb.com) cluster. In the MongoDB Cluster, make a two databases; one will be for production while the other is for testing.
 
 Install the dependencies and devDependencies and start the server.
 ```sh
@@ -280,4 +278,4 @@ And it's done! The thing I am most proud of is seeing the responses on Postman.
 
 Seeing all of the functionality I created work together is very satisfying. 
 
-That concludes my experiences working on this assessment. Thank you for the opportunity to showcase my skills. You can see the history of development if you follow the commits I've made along the way. If you have any questions do not hesitate to ask and I look forward to hearing from you!
+You can see the history of development if you follow the commits I've made along the way. If you have any questions do not hesitate to ask and I look forward to hearing from you!
